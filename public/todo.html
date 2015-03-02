@@ -1,0 +1,68 @@
+<h1 class="page-header">My Todo List</h1>
+
+
+<!--form name="selectorForm">
+    <label>Add New</label>
+    <div class="form-group">
+        <input name="name" type="text" class="form-control" id="inputField" ng-model="tk.name" ng-change=" myCtrl.change()" required/>
+    </div>
+    <button type="button" class="btn btn-default" ng-disabled="selectorForm.$invalid" ng-click="myCtrl.addTodo(tk, selectorForm)">Add</button>
+    <div ng-show="myCtrl.error.errors.name.message==='exists'">{{myCtrl.error.errors.name.value}} already exists</div>
+</form-->
+
+<form name="selectorForm" class="form-inline">
+    <div class="form-group" ng-class="{'has-error':myCtrl.error.errors.name.message==='exists'}">
+
+        <label class="control-label" for="inputError1">Add new</label>
+        <input type="text" class="form-control" id="inputError1" placeholder="Task" ng-model="tk.name"
+               ng-change=" myCtrl.change()" required>
+
+    </div>
+    <button type="button" class="btn btn-primary" ng-disabled="selectorForm.$invalid"
+            ng-click="myCtrl.addTodo(tk, selectorForm)">Add
+    </button>
+    <span class="help-block" ng-show="myCtrl.error.errors.name.message==='exists'">{{myCtrl.error.errors.name.value}} already exists</span>
+    <!--div ng-show="myCtrl.error.errors.name.message==='exists'">{{myCtrl.error.errors.name.value}} already exists
+    </div-->
+    <span class="help-block"></span>
+</form>
+
+
+<!--div class="row">
+    <div class="alert alert-danger" role="alert" ng-show="myCtrl.error.errors.name.message==='exists'">{{myCtrl.error.errors.name.value}} already exists
+    </div>
+</div-->
+
+<div class="panel panel-default">
+    <div class="panel-heading">To Do</div>
+    <ul id="done" class="list-group">
+        <li class="list-group-item clearfix" ng-repeat="todo in myCtrl.todoS">
+            <div class="pull-right">
+                <button type="button" class="btn btn-xs btn-default" ng-if="!todo.done"
+                        ng-click="myCtrl.updateTodo(todo._id)">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                </button>
+                <button type="button" class="btn btn-xs btn-danger" ng-click="myCtrl.delete(todo._id)">
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                </button>
+            </div>
+            <div ng-class="{strike: todo.done}">{{todo.name}}</div>
+            <!--input type="checkbox" ng-model="deleted"> deleted (apply "strike" class)<br-->
+        </li>
+    </ul>
+    <div class="panel-footer">
+        <!--button type="button" class="btn btn-danger" aria-hidden="true" onclick="$('#alertBox').show();" >Clean</button-->
+        <button type="button" class="btn btn-danger" aria-hidden="true" ng-click="myCtrl.cleanTodo()">Clean</button>
+
+        <!--div  id="alertBox" class="alert alert-danger alert-dismissible fade in" role="alert" hidden="true">
+            <button type="button" class="close" onclick="$('#alertBox').hide();" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4>Are you sure! You want to clear tasks marked as Done!</h4>
+
+            <p>
+                <button type="button" class="btn btn-danger" ng-click="myCtrl.cleanTodo()">Yes</button>
+                <button type="button" class="btn btn-default" onclick="$('#alertBox').hide();">No</button>
+            </p>
+        </div-->
+
+    </div>
+</div>
