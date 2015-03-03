@@ -236,6 +236,10 @@
                 templateUrl: 'login.html',
                 controller: 'LoginCtrl'
             })
+            .when('/signup', {
+                templateUrl: 'signup.html',
+                controller: 'SignupCtrl'
+            })
             .when('/todo', {
                 templateUrl: 'todo.html',
                 controller: 'myController',
@@ -306,6 +310,32 @@
         };
     });
 
+    /**********************************************************************
+     * Login controller
+     **********************************************************************/
+    app.controller('SignupCtrl', function ($scope, $http, $location) {
+        // This object will be filled by the form
+        //$scope.user = {};
+
+
+        $scope.signup = function () {
+            $http.post('/api/signup', {
+                username: $scope.username,
+                email: $scope.email,
+                password: $scope.password
+                //verification: $scope.user.verification
+            })
+                .success(function() {
+                    $location.path('/login');
+
+
+                })
+                .error(function(response) {
+                    $location.path('/signup');
+                });
+        };
+    });
+
 
     /**********************************************************************
      * Admin controller
@@ -326,6 +356,78 @@
             //console.log($location.path());
             return route === $location.path();
         };
+
+
+        /*app.directive('uniqueUsername', ['$http', function($http) {
+            return {
+                require: 'ngModel',
+                link: function(scope, elem, attrs, ctrl) {
+                    scope.busy = false;
+                    scope.$watch(attrs.ngModel, function(value) {
+
+                        // hide old error messages
+                        ctrl.$setValidity('isTaken', true);
+                        ctrl.$setValidity('invalidChars', true);
+
+                        if (!value) {
+                            // don't send undefined to the server during dirty check
+                            // empty username is caught by required directive
+                            return;
+                        }
+
+                        scope.busy = true;
+                        $http.post('/api/signup/check/username', {username: value})
+                            .success(function(data) {
+                                // everything is fine -> do nothing
+                                scope.busy = false;
+                            })
+                            .error(function(data) {
+
+                                // display new error message
+                                if (data.isTaken) {
+                                    ctrl.$setValidity('isTaken', false);
+                                } else if (data.invalidChars) {
+                                    ctrl.$setValidity('invalidChars', false);
+                                }
+
+                                scope.busy = false;
+                            });
+                    })
+                }
+            }
+        }]);
+*/
+        app.directive('ensureUnique', ['$http', function($http) {
+            return {
+                require: 'ngModel',
+                link: function(scope, ele, attrs, c) {
+                    scope.$watch(attrs.ngModel, function() {
+                        $http({
+                            method: 'POST',
+                            url: '/api/signup/check/username' + attrs.ensureUnique,
+                            data: {'field': attrs.ensureUnique}
+                        }).success(function(data, status, headers, cfg) {
+                            c.$setValidity('unique', data.isUnique);
+                        }).error(function(data, status, headers, cfg) {
+                            c.$setValidity('unique', false);
+                        });
+                    });
+                }
+            };
+        }]);
+
+        app.directive('match', [function () {
+            return {
+                require: 'ngModel',
+                link: function (scope, elem, attrs, ctrl) {
+
+                    scope.$watch('[' + attrs.ngModel + ', ' + attrs.match + ']', function(value){
+                        ctrl.$setValidity('match', value[0] === value[1] );
+                    }, true);
+
+                }
+            }
+        }]);
 
 
     });

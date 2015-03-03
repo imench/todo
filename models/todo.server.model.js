@@ -13,6 +13,7 @@ var UserSchema = new Schema({
         required: 'Username is required',
         trim: true
     },
+    email: String,
     password: {
         type: String,
         validate: [

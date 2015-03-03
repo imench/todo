@@ -254,6 +254,74 @@ app.delete('/api/todos/:todo_id', auth, function (req, res, next) {
     });
 });
 
+// dummy db
+var dummyDb = [
+    {username: 'john', email: 'john@email.com'},
+    {username: 'jack', email: 'jack@email.com'},
+    {username: 'jim', email: 'jim@email.com'}
+];
+
+
+
+app.post('/api/signup', function(req, res) {
+
+    var body = req.body;
+
+    User.findOne({ username: body.username
+    },function(err, user) {
+        if (err)
+            res.send(500, {'message': err});
+
+        if (user) {
+            res.send(403, {'message': 'User already exist!'});
+        }else {
+            var newUser = new User({ username: body.username,email: body.email, password:body.password})
+            newUser.save(function (err, user) {
+                if (err){
+                    res.send(500, {'message': err});
+                }
+                res.json({ 'message': 'User was successfully registered!'});
+            });
+        }
+    });
+});
+/*app.post('/api/signup', function(req, res) {
+    var username = req.body.username;
+    var password = req.body.password;
+    var email = req.body.email;
+    //var verification = req.body.verification;
+
+    console.log("post received: %s %s %s", username, password, email);
+});*/
+
+
+// ajax target for checking username
+app.post('/api/signup/check/username', function(req, res) {
+    var username = req.body.username;
+    // check if username contains non-url-safe characters
+   /* if (username !== encodeURIComponent(username)) {
+        res.json(403, {
+            invalidChars: true
+        });
+        return;
+    }*/
+    // check if username is already taken - query your db here
+    var usernameTaken = false;
+    for (var i = 0; i < dummyDb.length; i++) {
+        if (dummyDb[i].username === username) {
+            usernameTaken = true;
+            break;
+        }
+    }
+    if (usernameTaken) {
+        return res.json(403, {
+            isUnique: true
+        });
+
+    }
+    // looks like everything is fine
+    res.send(200);
+});
 
 /*app.get('/api/todo', function(req, res) {
 
@@ -286,7 +354,7 @@ app.delete('/api/todos/:todo_id', auth, function (req, res, next) {
  */
 
 app.use(function(err, req, res, next) {
-    //console.log(err);
+    console.log(err);
 
     switch (err.name) {
         case 'ValidationError':
