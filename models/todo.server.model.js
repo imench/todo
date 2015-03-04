@@ -15,12 +15,12 @@ var UserSchema = new Schema({
     },
     email: String,
     password: {
-        type: String,
-        validate: [
+        type: String
+        /*validate: [
             function (password) {
                 return password && password.length > 6;
             }, 'Password should be longer'
-        ]
+        ]*/
     }
     /*salt: {
      type: String
@@ -74,6 +74,19 @@ UserSchema.statics.findUniqueUsername = function (username, suffix, callback) {
 };
 
 var User = mongoose.model('User', UserSchema);
+
+User.schema.path('username')
+    .validate(function (value, respond) {
+        //console.log(this.owner);
+        User.find({'username': value.toLowerCase()}, function (err, users) {
+            //console.log(err);
+            respond(!err && users.length === 0);
+            /*Todo.findOne({name: value, 'owner': this.owner}, function(err, todo) {
+             if(err) throw err;
+             if(todo) return respond(false);
+             respond(true);*/
+        });
+    }, 'username exists');
 
 var TodoSchema = new Schema({
     name: String,

@@ -11,7 +11,7 @@
                     ng-model="username"
                     ng-minlength=3
                     ng-maxlength=20
-                    ensure-unique="username" required />
+                    ensure-unique required />
             <div class="error" ng-show="signup_form.username.$dirty && signup_form.username.$invalid">
                 <small class="error" ng-show="signup_form.username.$error.required">Please input a username</small>
                 <small class="error" ng-show="signup_form.username.$error.minlength">Your username is required to be at least 3 characters</small>
@@ -56,30 +56,62 @@
         <div class="row">
             <div class="large-12 columns">
                 <label>Your password</label>
-                <input type="text"
+                <input type="password"
                        placeholder="Password"
                        name="password"
                        ng-model="password"
                        ng-minlength=3
-                       ng-maxlength=20 required />
+                       ng-maxlength=20
+                       match="password" required />
                 <div class="error"
-                     ng-show="signup_form.name.$dirty && signup_form.name.$invalid">
+                     ng-show="signup_form.password.$dirty && signup_form.name.$invalid">
                     <small class="error"
-                           ng-show="signup_form.name.$error.required">
+                           ng-show="signup_form.password.$error.required">
                         Your password is required.
                     </small>
                     <small class="error"
-                           ng-show="signup_form.name.$error.minlength">
+                           ng-show="signup_form.password.$error.minlength">
                         Your password is required to be at least 3 characters
                     </small>
                     <small class="error"
-                           ng-show="signup_form.name.$error.maxlength">
+                           ng-show="signup_form.password.$error.maxlength">
                         Your password cannot be longer than 20 characters
                     </small>
                 </div>
             </div>
         </div>
 
-        <button type="submit" ng-disabled="signup_form.$invalid" class="button radius">Submit</button>
+        <div class="row">
+            <div class="large-12 columns">
+                <label>Repeat password</label>
+                <input type="password"
+                       placeholder="Password"
+                       name="verification"
+                       ng-model="verification"
+                       ng-minlength=3
+                       ng-maxlength=20
+                       match="password" required />
+                <div class="error"
+                     ng-show="signup_form.name.$dirty && signup_form.verification.$invalid">
+                    <small class="error"
+                           ng-show="signup_form.verification.$error.required">
+                        Your password is required.
+                    </small>
+                    <small class="error"
+                           ng-show="signup_form.verification.$error.minlength">
+                        Your password is required to be at least 3 characters
+                    </small>
+                    <small class="error"
+                           ng-show="signup_form.verification.$error.maxlength">
+                        Your password cannot be longer than 20 characters
+                    </small>
+                    <small class="error" ng-show="signup_form.verification.$error.match">Passwords don't match</small>
+                </div>
+            </div>
+        </div>
+
+
+
+        <button type="submit" ng-disabled="signup_form.$invalid" class="button radius">Signup</button>
     </fieldset>
 </form>

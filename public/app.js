@@ -322,8 +322,8 @@
             $http.post('/api/signup', {
                 username: $scope.username,
                 email: $scope.email,
-                password: $scope.password
-                //verification: $scope.user.verification
+                password: $scope.password,
+                verification: $scope.verification
             })
                 .success(function() {
                     $location.path('/login');
@@ -397,19 +397,24 @@
             }
         }]);
 */
+    });
+
         app.directive('ensureUnique', ['$http', function($http) {
             return {
                 require: 'ngModel',
                 link: function(scope, ele, attrs, c) {
-                    scope.$watch(attrs.ngModel, function() {
+                   // console.log('ensureUnique::link');
+                    scope.$watch(attrs.ngModel, function(newValue) {
                         $http({
                             method: 'POST',
-                            url: '/api/signup/check/username' + attrs.ensureUnique,
-                            data: {'field': attrs.ensureUnique}
+                            url: '/api/signup/check/username' ,
+                            data: {username: newValue}
                         }).success(function(data, status, headers, cfg) {
                             c.$setValidity('unique', data.isUnique);
+
                         }).error(function(data, status, headers, cfg) {
                             c.$setValidity('unique', false);
+
                         });
                     });
                 }
@@ -420,15 +425,15 @@
             return {
                 require: 'ngModel',
                 link: function (scope, elem, attrs, ctrl) {
-
+                   // console.log('match::link');
                     scope.$watch('[' + attrs.ngModel + ', ' + attrs.match + ']', function(value){
+                        console.log(value[0],value[1]);
                         ctrl.$setValidity('match', value[0] === value[1] );
                     }, true);
-
+                //console.log('match');
                 }
             }
         }]);
 
 
-    });
 })();

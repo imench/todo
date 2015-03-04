@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-
+var validator = require('validator');
 
 
 
@@ -255,35 +255,76 @@ app.delete('/api/todos/:todo_id', auth, function (req, res, next) {
 });
 
 // dummy db
-var dummyDb = [
+/*var dummyDb = [
     {username: 'john', email: 'john@email.com'},
     {username: 'jack', email: 'jack@email.com'},
     {username: 'jim', email: 'jim@email.com'}
-];
+];*/
 
 
 
-app.post('/api/signup', function(req, res) {
+//validator.isEmail('foo@bar.com'); //=> true
 
-    var body = req.body;
+app.post('/api/signup', function(req, res, next) {
+
+    var username = req.body.username;
+    var email = req.body.email;
+    var password = req.body.password;
+    var verification = req.body.verification;
+
+    var error = null;
+    // regexp from https://github.com/angular/angular.js/blob/master/src/ng/directive/input.js#L4
+   // var EMAIL_REGEXP = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}$/;
+
+    // check for valid inputs
+    console.log("post received: %s %s %s %s", username, password, email, verification);
+    if (!username || !email || !password || !verification) {
+        error = 'All fields are required';
+    } else if (!validator.isEmail(email)) {
+        error = 'Email is invalid';
+    }
+
+    if (error) {
+
+        return res.status(403).json({
+            error: error
+        });
+
+    }
+  /*  var body = req.body;
 
     User.findOne({ username: body.username
     },function(err, user) {
         if (err)
             res.send(500, {'message': err});
-
+            //res.status(500).json(err);
+            //return next(err);
         if (user) {
             res.send(403, {'message': 'User already exist!'});
+            //res.status(400).json(err);
+            //return next(err);
         }else {
             var newUser = new User({ username: body.username,email: body.email, password:body.password})
             newUser.save(function (err, user) {
                 if (err){
                     res.send(500, {'message': err});
+                    //res.status(500).json(err);
+                    //return next(err);
                 }
-                res.json({ 'message': 'User was successfully registered!'});
+                 res.json({ 'message': 'User was successfully registered!'});
             });
         }
-    });
+    });*/
+    else{
+    User.create({
+        username: username,
+        email: email,
+        password: password
+    }, function (err, user) {
+        if (err)
+            return next(err);
+});
+        res.sendStatus(200);}
 });
 /*app.post('/api/signup', function(req, res) {
     var username = req.body.username;
@@ -296,15 +337,18 @@ app.post('/api/signup', function(req, res) {
 
 
 // ajax target for checking username
-app.post('/api/signup/check/username', function(req, res) {
-    var username = req.body.username;
+app.post('/api/signup/check/username', function(req, res, next) {
+    /*var username = req.body.username;
+    console.log("post received: %s %s %s", username, password, email);
+  /* var username = req.body.username;
+   console.log("post received: %s %s %s", username, password, email);
     // check if username contains non-url-safe characters
-   /* if (username !== encodeURIComponent(username)) {
+    if (username !== encodeURIComponent(username)) {
         res.json(403, {
             invalidChars: true
         });
         return;
-    }*/
+    }
     // check if username is already taken - query your db here
     var usernameTaken = false;
     for (var i = 0; i < dummyDb.length; i++) {
@@ -318,10 +362,28 @@ app.post('/api/signup/check/username', function(req, res) {
             isUnique: true
         });
 
-    }
+    }*/
+
+   User.findOne({
+        username: req.body.username
+    }, function (err, user) {
+       //console.log(user);
+       if (!user)
+            return res.json( {
+                isUnique: true
+            });
+       else if(user)
+            return res.json({
+                isUnique: false
+            });
+       else
+       return next(err);
+    });
+
     // looks like everything is fine
-    res.send(200);
+    //res.send(200);
 });
+
 
 /*app.get('/api/todo', function(req, res) {
 
@@ -354,7 +416,7 @@ app.post('/api/signup/check/username', function(req, res) {
  */
 
 app.use(function(err, req, res, next) {
-    console.log(err);
+    //console.log(err);
 
     switch (err.name) {
         case 'ValidationError':
