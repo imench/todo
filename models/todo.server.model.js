@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 //crypto = require('crypto'),
 Schema = mongoose.Schema;
+crypto = require('crypto'),
+    Schema = mongoose.Schema;
 var session = require('express-session');
 //var ValidationError = require('mongoose/lib/errors/validation');
 //var ValidatorError =  require('mongoose/lib/errors/validator');
@@ -49,9 +51,22 @@ var UserSchema = new Schema({
  return crypto.pbkdf2Sync(password, this.salt, 10000,
  64).toString('base64');
  };*/
+UserSchema.methods.hashPassword = function (password) {
+    return crypto.pbkdf2Sync(password, this.salt, 10000,
+        64).toString('base64');
+};
+
+//var virtual = UserSchema.virtual('encrypted_password');
+UserSchema.virtual('password').set(function (v) {
+    this.salt = new
+        Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
+    this.encrypted_password = this.hashPassword(v);
+
+
+});
 
 UserSchema.methods.authenticate = function (password) {
-    return this.password === password;
+    return this.encrypted_password === this.hashPassword(password);
 };
 
 UserSchema.statics.findUniqueUsername = function (username, suffix, callback) {
