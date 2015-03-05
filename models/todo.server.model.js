@@ -103,6 +103,13 @@ User.schema.path('username')
         });
     }, 'username exists');
 
+User.schema.path('email')
+    .validate(function (value) {
+
+        return(validator.isEmail(value));
+
+
+    }, 'Email is invalid');
 var TodoSchema = new Schema({
     name: String,
     done: Boolean,
