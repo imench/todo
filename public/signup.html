@@ -38,6 +38,7 @@
                 <label class=" control-label">Your email</label>
                 <div  ng-class="{'has-error':signup_form.email.$dirty && signup_form.email.$invalid}">
                 <input type="email"
+                       overwrite-email
                        class="form-control"
                        placeholder="Email"
                        name="email"
@@ -59,10 +60,7 @@
                            ng-show="signup_form.email.$error.email">
                         Please input a valid email.
                     </small>
-                    <small class="help-block"
-                           ng-show="signup_form.email.$error.maxlength">
-                        Your email cannot be longer than 20 characters
-                    </small>
+
                 </div>
             </div>
 

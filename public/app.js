@@ -427,13 +427,32 @@
                 link: function (scope, elem, attrs, ctrl) {
                    // console.log('match::link');
                     scope.$watch('[' + attrs.ngModel + ', ' + attrs.match + ']', function(value){
-                        console.log(value[0],value[1]);
+                       // console.log(value[0],value[1]);
                         ctrl.$setValidity('match', value[0] === value[1] );
                     }, true);
                 //console.log('match');
                 }
             }
         }]);
+
+    app.directive('overwriteEmail', function() {
+        var EMAIL_REGEXP =  /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}$/;
+
+        return {
+            require: 'ngModel',
+            restrict: '',
+            link: function(scope, elm, attrs, ctrl) {
+                // only apply the validator if ngModel is present and Angular has added the email validator
+                if (ctrl && ctrl.$validators.email) {
+
+                    // this will overwrite the default Angular email validator
+                    ctrl.$validators.email = function(modelValue) {
+                        return ctrl.$isEmpty(modelValue) || EMAIL_REGEXP.test(modelValue);
+                    };
+                }
+            }
+        };
+    });
 
 
 })();
