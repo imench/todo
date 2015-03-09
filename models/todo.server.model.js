@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 //crypto = require('crypto'),
 Schema = mongoose.Schema;
+crypto = require('crypto'),
+    Schema = mongoose.Schema;
 var session = require('express-session');
 //var ValidationError = require('mongoose/lib/errors/validation');
 //var ValidatorError =  require('mongoose/lib/errors/validator');
@@ -13,13 +15,14 @@ var UserSchema = new Schema({
         required: 'Username is required',
         trim: true
     },
+    email: String,
     password: {
-        type: String,
-        validate: [
+        type: String
+        /*validate: [
             function (password) {
                 return password && password.length > 6;
             }, 'Password should be longer'
-        ]
+        ]*/
     }
     /*salt: {
      type: String
@@ -48,9 +51,22 @@ var UserSchema = new Schema({
  return crypto.pbkdf2Sync(password, this.salt, 10000,
  64).toString('base64');
  };*/
+UserSchema.methods.hashPassword = function (password) {
+    return crypto.pbkdf2Sync(password, this.salt, 10000,
+        64).toString('base64');
+};
+
+//var virtual = UserSchema.virtual('encrypted_password');
+UserSchema.virtual('password').set(function (v) {
+    this.salt = new
+        Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
+    this.encrypted_password = this.hashPassword(v);
+
+
+});
 
 UserSchema.methods.authenticate = function (password) {
-    return this.password === password;
+    return this.encrypted_password === this.hashPassword(password);
 };
 
 UserSchema.statics.findUniqueUsername = function (username, suffix, callback) {
@@ -74,6 +90,26 @@ UserSchema.statics.findUniqueUsername = function (username, suffix, callback) {
 
 var User = mongoose.model('User', UserSchema);
 
+User.schema.path('username')
+    .validate(function (value, respond) {
+        //console.log(this.owner);
+        User.find({'username': value.toLowerCase()}, function (err, users) {
+            //console.log(err);
+            respond(!err && users.length === 0);
+            /*Todo.findOne({name: value, 'owner': this.owner}, function(err, todo) {
+             if(err) throw err;
+             if(todo) return respond(false);
+             respond(true);*/
+        });
+    }, 'username exists');
+
+User.schema.path('email')
+    .validate(function (value) {
+
+        return(validator.isEmail(value));
+
+
+    }, 'Email is invalid');
 var TodoSchema = new Schema({
     name: String,
     done: Boolean,

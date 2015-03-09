@@ -1,4 +1,4 @@
-<h1>Welcome to Todo List</h1>
+
 <!--form ng-submit="login()">
     <p>
         <label class="control-label">Username</label>
@@ -15,33 +15,39 @@
         <i>username: admin<br/>password: admin</i>
     </p>
 </form-->
+<div class="col-lg-offset-4 col-lg-4">
+    <div class="panel panel-default">
+        <div class="panel-heading">Welcome to Todo List</div>
+        <div class="panel-body">
+<form>
+    <div class="form-group">
+        <label for="inputEmail3" class="control-label">Username</label>
 
-<form class="form-horizontal">
-    <div class="form-group">
-        <label for="inputEmail3" class="col-sm-2 control-label">Username</label>
-        <div class="col-sm-3">
             <input class="form-control" id="inputEmail3" placeholder="Username" ng-model="user.username">
-        </div>
+
     </div>
     <div class="form-group">
-        <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
-        <div class="col-sm-3">
+        <label for="inputPassword3" class="control-label">Password</label>
+
             <input type="password" class="form-control" id="inputPassword3" placeholder="Password" ng-model="user.password">
-        </div>
+
     </div>
     <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-5">
+
             <div class="checkbox">
                 <label>
                     <input type="checkbox"> Remember me
                 </label>
             </div>
-        </div>
+
     </div>
     <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-5">
+
             <button type="submit" class="btn btn-primary" ng-click="login()">Sign in</button>
-        </div>
+
     </div>
 </form>
+</div>
+</div>
+</div>
 
