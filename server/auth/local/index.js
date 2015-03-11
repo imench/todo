@@ -3,7 +3,6 @@
 var express = require('express');
 var passport = require('passport');
 var auth = require('../auth.service');
-
 var router = express.Router();
 
 // route to log in
@@ -24,7 +23,6 @@ router.post('/logout', function (req, res) {
 
 router.post('/signup', function (req, res, next) {
 
-
     User.create({
         username: req.body.username,
         email: req.body.email,
@@ -40,7 +38,6 @@ router.post('/signup', function (req, res, next) {
 
 // ajax target for checking username
 router.post('/signup/check/username', function (req, res, next) {
-
 
     User.findOne({
         username: req.body.username

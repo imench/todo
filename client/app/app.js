@@ -1,71 +1,37 @@
 'use strict';
 
 angular.module('to_do', [
-    'ngRoute'
-])
-.config(function ($routeProvider, $locationProvider, $httpProvider) {
-    //================================================
-    // Check if the user is connected
-    //================================================
-//    var checkLoggedin = function ($q, $timeout, $http, $location, $rootScope) {
-//            // Initialize a new promise
-//            var deferred = $q.defer();
-//
-//            // Make an AJAX call to check if the user is logged in
-//            $http.get('/api/loggedin').success(function (user) {
-//                // Authenticated
-//                if (user !== '0'){
-//                    /*$timeout(deferred.resolve, 0);*/
-//                    $rootScope.auth=true;
-//                    deferred.resolve();
-//                }
-//                // Not Authenticated
-//                else {
-//                    $rootScope.message = 'You need to log in.';
-//                    //$timeout(function(){deferred.reject();}, 0);
-//                    $rootScope.auth=false;
-//                    deferred.reject();
-//                    $location.url('/login');
-//                }
-//            })
-//                .error(function () {
-//                    $rootScope.message = 'Erreurrrrr.';
-//                    //$timeout(function(){deferred.reject();}, 0);
-//                    deferred.reject();
-//                    $location.url('/login');
-//                });
-//            return deferred.promise;
-//        };
-    //================================================
+        'ngRoute'
+    ])
+    .config(function ($routeProvider, $locationProvider, $httpProvider) {
+        //================================================
+        // Add an interceptor for AJAX errors
+        //================================================
+        $httpProvider.interceptors.push(function ($q, $location) {
+            return {
+                response: function (response) {
+                    // do something on success
+                    return response;
+                },
+                responseError: function (response) {
+                    /* if (response.status === 401)
+                     $location.url('/login');*/
+                    return $q.reject(response);
+                }
+            };
+        });
+    }) // end of config()
 
-    //================================================
-    // Add an interceptor for AJAX errors
-    //================================================
-    $httpProvider.interceptors.push(function ($q, $location) {
-        return {
-            response: function (response) {
-                // do something on success
-                return response;
-            },
-            responseError: function (response) {
-               /* if (response.status === 401)
-                    $location.url('/login');*/
-                return $q.reject(response);
-            }
-        };
-    });
-}) // end of config()
-
-.run(function ($rootScope, $http) {
-    $rootScope.message = '';
-    $rootScope.auth = false;
-
-    // Logout function is available in any pages
-    $rootScope.logout = function () {
-        $rootScope.message = 'Logged out.';
+    .run(function ($rootScope, $http) {
+        $rootScope.message = '';
         $rootScope.auth = false;
-        $http.post('/auth/local/logout');
-    };
+
+        // Logout function is available in any pages
+        $rootScope.logout = function () {
+            $rootScope.message = 'Logged out.';
+            $rootScope.auth = false;
+            $http.post('/auth/local/logout');
+        };
 
 
-});
+    });

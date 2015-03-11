@@ -10,13 +10,12 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var passport = require('passport');
 
-module.exports = function(app) {
+module.exports = function (app) {
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
-    //app.set('appPath', '../client');
-    app.use(express.static(__dirname + '/../..'+'/client'));
+    app.use(express.static(__dirname + '/../../client'));
 
-   // app.use(methodOverride());
+    // app.use(methodOverride());
 
     app.use(session({
         saveUninitialized: true,

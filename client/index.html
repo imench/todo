@@ -1,9 +1,4 @@
 <!DOCTYPE html>
-
-
-
-
-
 <html ng-app="to_do">
 <head>
     <meta charset="utf-8">
@@ -35,7 +30,6 @@
     <script src="app/main/main.controller.js"></script>
     <script src="app/main/main.js"></script>
     <script src="components/navbar/nav.controller.js"></script>
-
 </head>
 
 <body>
@@ -46,26 +40,24 @@
 
             <a class="navbar-brand" href="#/">Todo List</a>
         </div>
-
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse"   id="bs-example-navbar-collapse-8">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-8">
             <ul class="nav navbar-nav" ng-controller="NavActiveCtrl as actCtrl">
                 <li ng-class="{active:actCtrl.isActive('/')}"><a href="#/">Home</a></li>
                 <li ng-show="auth" ng-class="{active:actCtrl.isActive('/todo')}"><a href="#/todo">Todos</a></li>
                 <li ng-show="auth" ng-class="{active:actCtrl.isActive('/help')}"><a href="#/help">Help</a></li>
-
             </ul>
             <ul class="nav navbar-nav pull-right">
                 <li ng-show="!auth"><a href="#/login">Login</a></li>
                 <li ng-show="!auth"><a href="#/signup">Signup</a></li>
-                <li ng-show="auth"> <a href="#/" ng-click="logout()">Logout</a>
+                <li ng-show="auth"><a href="#/" ng-click="logout()">Logout</a>
             </ul>
-        </div><!-- /.navbar-collapse -->
+        </div>
+        <!-- /.navbar-collapse -->
     </div>
 </nav>
 
 <div class="container" ng-view>
-
 
 </div>
 </body>

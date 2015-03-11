@@ -7,7 +7,7 @@ angular.module('to_do')
                 templateUrl: 'app/help/help.html',
                 controller: 'helpController',
                 resolve: {
-                    loggedin: ['Auth', function(Auth) {
+                    loggedin: ['Auth', function (Auth) {
                         return Auth.checkLoggedin();
                     }]
                 }

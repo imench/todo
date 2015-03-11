@@ -1,15 +1,6 @@
 <h1 class="page-header">My Todo List</h1>
 
 
-<!--form name="selectorForm">
-    <label>Add New</label>
-    <div class="form-group">
-        <input name="name" type="text" class="form-control" id="inputField" ng-model="tk.name" ng-change=" myCtrl.change()" required/>
-    </div>
-    <button type="button" class="btn btn-default" ng-disabled="selectorForm.$invalid" ng-click="myCtrl.addTodo(tk, selectorForm)">Add</button>
-    <div ng-show="myCtrl.error.errors.name.message==='exists'">{{myCtrl.error.errors.name.value}} already exists</div>
-</form-->
-
 <form name="selectorForm" class="form-inline">
     <div class="form-group" ng-class="{'has-error':myCtrl.error.errors.name.message==='exists'}">
 
@@ -27,11 +18,6 @@
     <span class="help-block"></span>
 </form>
 
-
-<!--div class="row">
-    <div class="alert alert-danger" role="alert" ng-show="myCtrl.error.errors.name.message==='exists'">{{myCtrl.error.errors.name.value}} already exists
-    </div>
-</div-->
 
 <div class="panel panel-default">
     <div class="panel-heading">To Do</div>
@@ -53,16 +39,5 @@
     <div class="panel-footer">
         <!--button type="button" class="btn btn-danger" aria-hidden="true" onclick="$('#alertBox').show();" >Clean</button-->
         <button type="button" class="btn btn-danger" aria-hidden="true" ng-click="myCtrl.cleanTodo()">Clean</button>
-
-        <!--div  id="alertBox" class="alert alert-danger alert-dismissible fade in" role="alert" hidden="true">
-            <button type="button" class="close" onclick="$('#alertBox').hide();" aria-label="Close"><span aria-hidden="true">×</span></button>
-            <h4>Are you sure! You want to clear tasks marked as Done!</h4>
-
-            <p>
-                <button type="button" class="btn btn-danger" ng-click="myCtrl.cleanTodo()">Yes</button>
-                <button type="button" class="btn btn-default" onclick="$('#alertBox').hide();">No</button>
-            </p>
-        </div-->
-
     </div>
 </div>
