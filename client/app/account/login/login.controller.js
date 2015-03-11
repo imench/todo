@@ -7,7 +7,7 @@ angular.module('to_do')
 
     // Register the login() function
     $scope.login = function () {
-        $http.post('/api/login', {
+        $http.post('/auth/local/login', {
             username: $scope.user.username,
             password: $scope.user.password
         })

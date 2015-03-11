@@ -16,11 +16,12 @@
                 return $http.put('/api/todos/'+ id );
             },
             clean: function () {
-                return $http.delete('/api/todos/done');
+                return $http.delete('/api/todos/');
             },
             delete: function (id) {
                 return $http.delete('/api/todos/'+ id);
             }
+
             /*login: function () {
              return $http.post('/login');
              }*/

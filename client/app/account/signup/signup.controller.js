@@ -7,7 +7,7 @@ app.controller('SignupCtrl', function ($scope, $http, $location) {
 
 
     $scope.signup = function () {
-        $http.post('/api/signup', {
+        $http.post('/auth/local/signup', {
             username: $scope.username,
             email: $scope.email,
             password: $scope.password,
@@ -32,7 +32,7 @@ app.directive('ensureUnique', ['$http', function($http) {
             scope.$watch(attrs.ngModel, function(newValue) {
                 $http({
                     method: 'POST',
-                    url: '/api/signup/check/username' ,
+                    url: '/auth/local/signup/check/username' ,
                     data: {username: newValue}
                 }).success(function(data, status, headers, cfg) {
                     c.$setValidity('unique', data.isUnique);

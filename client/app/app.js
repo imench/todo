@@ -64,7 +64,7 @@ angular.module('to_do', [
     $rootScope.logout = function () {
         $rootScope.message = 'Logged out.';
         $rootScope.auth = false;
-        $http.post('/api/logout');
+        $http.post('/auth/local/logout');
     };
 
 
