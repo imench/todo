@@ -77,17 +77,17 @@ angular.module('to_do')
 
 
              myCtrl.todoS.splice(index, 1);*/
-            Todos.delete(id).success(function (data) {
-                var r = confirm("Are you sure! You want to delete task!");
-                if (r === true)
+            var r = confirm("Are you sure! You want to delete task!");
+            if (r === true) {
+                Todos.delete(id).success(function (data) {
                     myCtrl.todoS = data;
-                console.log(data);
-            })
-                .error(function (data) {
-                    console.log('Error: ' + data);
-                });
-
-            //myCtrl.todoS.pop(obj);
+                    console.log(data);
+                })
+                    .error(function (data) {
+                        console.log('Error: ' + data);
+                    });
+            }
+            ;
         };
 
 
@@ -96,17 +96,17 @@ angular.module('to_do')
 
 
              myCtrl.todoS.splice(index, 1);*/
-            Todos.clean().success(function (data) {
-                var r = confirm("Are you sure! You want to clear tasks marked as Done!");
-                if (r === true)
+            var r = confirm("Are you sure! You want to clear tasks marked as Done!");
+            if (r === true) {
+                Todos.clean().success(function (data) {
                     myCtrl.todoS = data;
-                console.log(data);
-            })
-                .error(function (data) {
-                    console.log('Error: ' + data);
-                });
-
-            //myCtrl.todoS.pop(obj);
+                    console.log(data);
+                })
+                    .error(function (data) {
+                        console.log('Error: ' + data);
+                    });
+            }
+            ;
         };
 
 
