@@ -1,0 +1,35 @@
+<div class="col-lg-offset-4 col-lg-4">
+    <div class="panel panel-default">
+        <div class="panel-heading">Welcome to Todo List</div>
+        <div class="panel-body">
+            <form>
+                <div class="form-group">
+                    <label for="inputEmail3" class="control-label">Username</label>
+
+                    <input class="form-control" id="inputEmail3" placeholder="Username" ng-model="user.username">
+
+                </div>
+                <div class="form-group">
+                    <label for="inputPassword3" class="control-label">Password</label>
+
+                    <input type="password" class="form-control" id="inputPassword3" placeholder="Password" ng-model="user.password">
+
+                </div>
+                <div class="form-group">
+
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox"> Remember me
+                        </label>
+                    </div>
+
+                </div>
+                <div class="form-group">
+
+                    <button type="submit" class="btn btn-primary" ng-click="login()">Sign in</button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
