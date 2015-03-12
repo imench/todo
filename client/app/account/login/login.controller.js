@@ -17,8 +17,10 @@ angular.module('to_do')
                     $rootScope.auth = true;
                     $location.url('/todo');
                 })
-                .error(function () {
+                .error(function (data) {
                     // Error: authentication failed
+                    $scope.error=data;
+                    //console.log(data);
                     $rootScope.message = 'Authentication failed.';
                     $rootScope.auth = false;
                     $location.url('/login');
