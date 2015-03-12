@@ -15,9 +15,10 @@ module.exports = function(app) {
     app.use('/auth', require('./auth'));
 
     app.use(function (err, req, res, next) {
+        console.log(err);
         //console.trace(err);
-        if (err.stack)
-            console.log(err.stack);
+        /*if (err.stack)
+            console.log(err.stack);*/
 
         switch (err.name) {
             case 'ValidationError':
@@ -33,9 +34,9 @@ module.exports = function(app) {
         .get(errors[404]);*/
 
     // All other routes should redirect to the index.html
-    /*app.route('/*')
+    app.route('/*')
         .get(function(req, res) {
             res.sendfile(app.get('appPath') + '/index.html');
-        });*/
+        });
     //
 };
