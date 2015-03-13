@@ -48,27 +48,18 @@ UserSchema.methods.authenticate = function (password) {
 
 var User = mongoose.model('User', UserSchema);
 
-
 User.schema.path('username')
     .validate(function (value, respond) {
         //console.log(this.owner);
         User.find({'username': value.toLowerCase()}, function (err, users) {
             //console.log(err);
             respond(!err && users.length === 0);
-            /*Todo.findOne({name: value, 'owner': this.owner}, function(err, todo) {
-             if(err) throw err;
-             if(todo) return respond(false);
-             respond(true);*/
         });
     }, 'username exists');
 
 User.schema.path('email')
     .validate(function (value) {
-
         return(validator.isEmail(value));
-
-
     }, 'Email is invalid');
-
 
 module.exports = mongoose.model('User', UserSchema);

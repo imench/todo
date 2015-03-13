@@ -17,10 +17,8 @@ var Todo = mongoose.model('Todo', TodoSchema);
 
 Todo.schema.path('name')
     .validate(function (value, respond) {
-
         Todo.find({'owner': this.owner, 'name': value.toLowerCase()}, function (err, todos) {
             respond(!err && todos.length === 0);
-
         });
     }, 'exists');
 

@@ -6,7 +6,6 @@
 var config = require('../config/environment/development.js');
 var express = require('express');
 var bodyParser = require('body-parser');
-//var methodOverride = require('method-override');
 var session = require('express-session');
 var passport = require('passport');
 var path = require('path');
@@ -16,7 +15,6 @@ module.exports = function (app) {
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
     app.use(express.static(__dirname + '/../../client'));
-    // app.use(methodOverride());
 
     if ('production' === env) {
         app.use(express.static(path.join(config.root, 'public')));
@@ -26,7 +24,7 @@ module.exports = function (app) {
     if ('development' === env || 'test' === env) {
         app.use(express.static(path.join(config.root, '.tmp')));
         app.use(express.static(path.join(config.root, 'client')));
-        app.set('appPath', 'client');
+        app.set('appPath', config.root + '/client');
     }
 
     app.use(session({

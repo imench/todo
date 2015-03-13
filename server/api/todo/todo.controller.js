@@ -55,24 +55,22 @@ exports.update = function (req, res, next) {
 // Deletes todos which are done from the DB.
 exports.cleanall = function (req, res, next) {
     Todo.remove({
-            done: true
-        },
+        done: true
+    }, function (err) {
+        //console.log("f1");
+        if (err)
+            return next(err);
 
-        function (err) {
-            //console.log("f1");
+        // get and return all the todos after you create another
+        Todo.find({
+            owner: req.user.id
+        }, function (err, todos) {
+            //console.log("f2");
             if (err)
                 return next(err);
-
-            // get and return all the todos after you create another
-            Todo.find({
-                owner: req.user.id
-            }, function (err, todos) {
-                //console.log("f2");
-                if (err)
-                    return next(err);
-                res.json(todos);
-            });
+            res.json(todos);
         });
+    });
 
 };
 
