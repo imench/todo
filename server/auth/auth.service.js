@@ -3,9 +3,6 @@ var config = require('../config/environment');
 var mongoose = require('mongoose');
 var session = require('express-session');
 var passport = require('passport');
-//var User = require('../api/user/user.model');
-
-
 
 
 // Define a middleware function to be used for every secured routes
@@ -15,6 +12,5 @@ var auth = function (req, res, next) {
     else
         next();
 };
-
 
 exports.auth = auth;

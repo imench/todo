@@ -1,52 +1,29 @@
 angular.module('to_do')
-    .controller('myController', function (Todos, $http) {
+    .controller('myController', ['Todos', function (Todos) {
         var myCtrl = this;
         myCtrl.tk = {};
 
-        /*Todos.login()
-         .success(function (data) {
-         myCtrl.todoS = data;
-         console.log(data);
-         })
-         .error(function (data) {
-         console.log('Error: ' + data);
-         });*/
+        Todos.query(function (resp) {
+            // Handle successful response here
+            myCtrl.todoS = resp;
+            //console.log(resp);
+        }, function (err) {
+            // Handle error here
+            console.log(err);
+        });
 
-        Todos.get()
-            .success(function (data) {
-                myCtrl.todoS = data;
-                console.log(data);
-            })
-            .error(function (data) {
-                console.log('Error: ' + data);
-            });
-
-
-        this.addTodo = function (tk, form) {
-            /* var todo = { name: tk.name, done: false};
-             myCtrl.todoS.push(todo);
-
-             save().success(function (data) {
-             //myCtrl.todoS = data;
-             tk.name = '';
-             });*/
+        this.addTodo = function (tk) {
             myCtrl.tk = tk;
-            Todos.save(myCtrl.tk)
-                .success(function (data) {
-                    tk.name = '';
-                    //myCtrl.tk= {}; // clear the form so our user is ready to enter another
-                    myCtrl.todoS = data;
-                    console.log(data);
-                })
-                .error(function (data) {
-                    // if(data.errors.name.message === 'exists')
-                    myCtrl.error = data;
-                    // console.log(data.errors.name.value + " already exists");
-                });
-
-            /*$http.get('/api/todo').success(function(data) {
-             myCtrl.todoS = data;
-             });*/
+            Todos.save(myCtrl.tk, function (resp) {
+                // Handle successful response here
+                tk.name = '';
+                myCtrl.todoS = resp;
+                //console.log(resp);
+            }, function (err) {
+                // Handle error here
+                myCtrl.error = err.data;
+                console.log(err);
+            });
         };
 
         this.change = function () {
@@ -56,61 +33,43 @@ angular.module('to_do')
 
         this.updateTodo = function (id) {
             // obj.done = true;
-
-            Todos.update(id).success(function (data) {
-                myCtrl.todoS = data;
-                //console.log(data);
-
-            })
-                .error(function (data) {
-                    console.log('Error: ' + data);
-                });
-
-            /* Todos.get('/api/todo').success(function(data) {
-             myCtrl.todoS = data;
-             });*/
+            Todos.update({ id: id }, function (resp) {
+                // Handle successful response here
+                myCtrl.todoS = resp;
+                //console.log(resp);
+            }, function (err) {
+                // Handle error here
+                console.log(err);
+            });
         };
-
 
         this.delete = function (id) {
-            /*var index = myCtrl.todoS.indexOf(obj);
-
-
-             myCtrl.todoS.splice(index, 1);*/
-            Todos.delete(id).success(function (data) {
-                var r = confirm("Are you sure! You want to delete task!");
-                if (r === true)
-                    myCtrl.todoS = data;
-                console.log(data);
-            })
-                .error(function (data) {
-                    console.log('Error: ' + data);
+            var r = confirm("Are you sure! You want to delete task!");
+            if (r === true) {
+                Todos.delete({ id: id }, function (resp) {
+                    // Handle successful response here
+                    myCtrl.todoS = resp;
+                    //console.log(resp);
+                }, function (err) {
+                    // Handle error here
+                    console.log(err);
                 });
-
-            //myCtrl.todoS.pop(obj);
+            }
+            ;
         };
-
 
         this.cleanTodo = function () {
-            /*var index = myCtrl.todoS.indexOf(obj);
-
-
-             myCtrl.todoS.splice(index, 1);*/
-            Todos.clean().success(function (data) {
-                var r = confirm("Are you sure! You want to clear tasks marked as Done!");
-                if (r === true)
-                    myCtrl.todoS = data;
-                console.log(data);
-            })
-                .error(function (data) {
-                    console.log('Error: ' + data);
+            var r = confirm("Are you sure! You want to clear tasks marked as Done!");
+            if (r === true) {
+                Todos.clean(function (resp) {
+                    // Handle successful response here
+                    myCtrl.todoS = resp;
+                    //console.log(resp);
+                }, function (err) {
+                    // Handle error here
+                    console.log(err);
                 });
-
-            //myCtrl.todoS.pop(obj);
+            }
+            ;
         };
-
-
-        /*function save() {
-         return Todo.save(myCtrl.todoS);
-         }*/
-    });
+    }]);

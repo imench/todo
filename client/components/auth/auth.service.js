@@ -10,16 +10,16 @@
             // Make an AJAX call to check if the user is logged in
             $http.get('/auth/local/loggedin').success(function (user) {
                 // Authenticated
-                if (user !== '0'){
+                if (user !== '0') {
                     /*$timeout(deferred.resolve, 0);*/
-                    $rootScope.auth=true;
+                    $rootScope.auth = true;
                     deferred.resolve();
                 }
                 // Not Authenticated
                 else {
                     $rootScope.message = 'You need to log in.';
                     //$timeout(function(){deferred.reject();}, 0);
-                    $rootScope.auth=false;
+                    $rootScope.auth = false;
                     deferred.reject();
                     $location.url('/login');
                 }

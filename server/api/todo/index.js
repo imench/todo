@@ -10,7 +10,7 @@ var router = express.Router();
 router.get('/', auth.auth, controller.index);
 router.post('/', auth.auth, controller.create);
 router.put('/:todo_id', auth.auth, controller.update);
-router.delete('/', auth.auth, controller.cleanall);
+router.delete('/done', auth.auth, controller.cleanall);
 router.delete('/:todo_id', auth.auth, controller.destroy);
 
 module.exports = router;

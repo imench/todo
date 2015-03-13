@@ -2,32 +2,30 @@
     <div class="panel panel-default">
         <div class="panel-heading">Welcome to Todo List</div>
         <div class="panel-body">
-            <form>
-                <div class="form-group">
+            <form name="form" novalidate>
+                <div class="form-group" ng-class="{'has-error': (form.username.$error.required || error )&& form.username.$dirty}">
                     <label for="inputEmail3" class="control-label">Username</label>
-
-                    <input class="form-control" id="inputEmail3" placeholder="Username" ng-model="user.username">
-
+                    <input name="username" class="form-control" id="inputEmail3" placeholder="Username" ng-model="user.username" required>
+                    <span class="help-block ng-hide" ng-show="form.username.$error.required && form.username.$dirty">required</span>
                 </div>
-                <div class="form-group">
+                <div class="form-group" ng-class="{'has-error': (form.password.$error.required || error)&& form.password.$dirty}">
                     <label for="inputPassword3" class="control-label">Password</label>
-
-                    <input type="password" class="form-control" id="inputPassword3" placeholder="Password" ng-model="user.password">
-
+                    <input name="password" type="password" class="form-control" id="inputPassword3" placeholder="Password"
+                           ng-model="user.password" required>
+                    <span class="help-block ng-hide" ng-show="form.password.$error.required && form.password.$dirty">required</span>
+                    <span class="help-block ng-binding" ng-show=" error === 'Unauthorized'" ng-class="{'has-error': error === 'Unauthorized'}">username or password incorrect</span>
                 </div>
-                <div class="form-group">
+                <!--span class="help-block" ng-show="myCtrl.error.errors.name.message==='exists'">login ou mot de passe incorrect</span-->
 
+                <div class="form-group">
                     <div class="checkbox">
                         <label>
                             <input type="checkbox"> Remember me
                         </label>
                     </div>
-
                 </div>
                 <div class="form-group">
-
-                    <button type="submit" class="btn btn-primary" ng-click="login()">Sign in</button>
-
+                    <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary" ng-click="login()">Sign in</button>
                 </div>
             </form>
         </div>

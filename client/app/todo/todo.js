@@ -2,8 +2,6 @@
 
 angular.module('to_do')
     .config(function ($routeProvider, $locationProvider, $httpProvider) {
-
-
         $routeProvider
             .when('/todo', {
                 templateUrl: 'app/todo/todo.html',

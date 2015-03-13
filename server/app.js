@@ -1,4 +1,3 @@
-
 /**
  * Main application file
  */
@@ -19,11 +18,11 @@ var server = require('http').createServer(app);
 require('./config/express')(app);
 require('./routes')(app);
 
-server.listen(8080);
+//server.listen(8080);
 // Start server
-/*server.listen(config.port, config.ip, function () {
+server.listen(config.port, config.ip, function () {
     console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
-});*/
+});
 
 // Expose app
 exports = module.exports = app;
