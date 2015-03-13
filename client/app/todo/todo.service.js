@@ -4,23 +4,15 @@
 (function () {
     var app = angular.module('to_do');
 
-    app.factory('Todos', function ($http) {
-        return {
-            get: function () {
-                return $http.get('/api/todos/');
-            },
-            save: function (tk) {
-                return $http.post('/api/todos/', tk);
-            },
-            update: function (id) {
-                return $http.put('/api/todos/' + id);
-            },
-            clean: function () {
-                return $http.delete('/api/todos/done');
-            },
-            delete: function (id) {
-                return $http.delete('/api/todos/' + id);
-            }
-        };
-    });
+    app.factory('Todos', [
+        '$resource', function ($resource) {
+            return $resource('/api/todos/:id', {id: '@id'},
+                {
+                    'save': { method: 'POST', isArray: true },
+                    'update': { method: 'PUT', isArray: true },
+                    'clean': { method: 'DELETE', params: { id: 'done' }, isArray: true},
+                    'delete': { method: 'DELETE', isArray: true}
+                });
+        }]);
 })();
+

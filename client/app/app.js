@@ -1,6 +1,7 @@
 'use strict';
 
 angular.module('to_do', [
+        'ngResource',
         'ngRoute'
     ])
     .config(function ($routeProvider, $locationProvider, $httpProvider) {

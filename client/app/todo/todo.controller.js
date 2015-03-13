@@ -1,28 +1,29 @@
 angular.module('to_do')
-    .controller('myController', function (Todos, $http) {
+    .controller('myController', ['Todos', function (Todos) {
         var myCtrl = this;
         myCtrl.tk = {};
 
-        Todos.get()
-            .success(function (data) {
-                myCtrl.todoS = data;
-                console.log(data);
-            })
-            .error(function (data) {
-                console.log('Error: ' + data);
-            });
+        Todos.query(function (resp) {
+            // Handle successful response here
+            myCtrl.todoS = resp;
+            //console.log(resp);
+        }, function (err) {
+            // Handle error here
+            console.log(err);
+        });
 
-        this.addTodo = function (tk, form) {
+        this.addTodo = function (tk) {
             myCtrl.tk = tk;
-            Todos.save(myCtrl.tk)
-                .success(function (data) {
-                    tk.name = ''; // clear the form so our user is ready to enter another
-                    myCtrl.todoS = data;
-                    console.log(data);
-                })
-                .error(function (data) {
-                    myCtrl.error = data;
-                });
+            Todos.save(myCtrl.tk, function (resp) {
+                // Handle successful response here
+                tk.name = '';
+                myCtrl.todoS = resp;
+                //console.log(resp);
+            }, function (err) {
+                // Handle error here
+                myCtrl.error = err.data;
+                console.log(err);
+            });
         };
 
         this.change = function () {
@@ -32,25 +33,27 @@ angular.module('to_do')
 
         this.updateTodo = function (id) {
             // obj.done = true;
-            Todos.update(id).success(function (data) {
-                myCtrl.todoS = data;
-                //console.log(data);
-            })
-                .error(function (data) {
-                    console.log('Error: ' + data);
-                });
+            Todos.update({ id: id }, function (resp) {
+                // Handle successful response here
+                myCtrl.todoS = resp;
+                //console.log(resp);
+            }, function (err) {
+                // Handle error here
+                console.log(err);
+            });
         };
 
         this.delete = function (id) {
             var r = confirm("Are you sure! You want to delete task!");
             if (r === true) {
-                Todos.delete(id).success(function (data) {
-                    myCtrl.todoS = data;
-                    console.log(data);
-                })
-                    .error(function (data) {
-                        console.log('Error: ' + data);
-                    });
+                Todos.delete({ id: id }, function (resp) {
+                    // Handle successful response here
+                    myCtrl.todoS = resp;
+                    //console.log(resp);
+                }, function (err) {
+                    // Handle error here
+                    console.log(err);
+                });
             }
             ;
         };
@@ -58,14 +61,15 @@ angular.module('to_do')
         this.cleanTodo = function () {
             var r = confirm("Are you sure! You want to clear tasks marked as Done!");
             if (r === true) {
-                Todos.clean().success(function (data) {
-                    myCtrl.todoS = data;
-                    console.log(data);
-                })
-                    .error(function (data) {
-                        console.log('Error: ' + data);
-                    });
+                Todos.clean(function (resp) {
+                    // Handle successful response here
+                    myCtrl.todoS = resp;
+                    //console.log(resp);
+                }, function (err) {
+                    // Handle error here
+                    console.log(err);
+                });
             }
             ;
         };
-    });
+    }]);
