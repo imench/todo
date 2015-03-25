@@ -1,16 +1,16 @@
 var mongoose = require('mongoose');
-crypto = require('crypto'),
-    Schema = mongoose.Schema;
+var crypto = require('crypto');
+var Schema = mongoose.Schema;
+
 var User = require('../user/user.model');
 
 var TodoSchema = new Schema({
-    name: String,
+    name: {type: String, required: true},
     done: Boolean,
     owner: {
         type: Schema.ObjectId,
         ref: 'User'
     }
-
 });
 
 var Todo = mongoose.model('Todo', TodoSchema);
