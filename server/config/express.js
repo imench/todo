@@ -3,7 +3,7 @@
  */
 
 'use strict';
-var config = require('../config/environment/development.js');
+var config = require('../config/environment');
 var express = require('express');
 var bodyParser = require('body-parser');
 var session = require('express-session');
