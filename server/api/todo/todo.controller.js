@@ -20,7 +20,7 @@ exports.create = function (req, res, next) {
         name: req.body.name,
         done: false,
         owner: req.user.id
-    }, function (err, todo) {
+    }, function (err) {
         if (err)
             return next(err);
 
@@ -37,7 +37,9 @@ exports.create = function (req, res, next) {
 
 // Updates an existing todo in the DB.
 exports.update = function (req, res, next) {
-    Todo.update({_id: req.params.todo_id }, { $set: { done: true }}, function (err) {
+    Todo.update({_id: req.params.todo_id, owner: req.user.id }, { $set: { done: true }}, function (err, todo) {
+        if(!todo)
+            return res.status(404).json(err);
         if (err)
             return next(err);
 
@@ -55,9 +57,11 @@ exports.update = function (req, res, next) {
 // Deletes todos which are done from the DB.
 exports.cleanall = function (req, res, next) {
     Todo.remove({
-        done: true
-    }, function (err) {
+        done: true, owner: req.user.id
+    }, function (err, todo) {
         //console.log("f1");
+        if(!todo)
+            return res.status(404).json(err);
         if (err)
             return next(err);
 
@@ -77,8 +81,10 @@ exports.cleanall = function (req, res, next) {
 // Deletes a todo from the DB.
 exports.destroy = function (req, res, next) {
     Todo.remove({
-        _id: req.params.todo_id
-    }, function (err) {
+        _id: req.params.todo_id, owner: req.user.id
+    }, function (err,todo) {
+        if(!todo)
+            return res.status(404).json(err);
         if (err)
             return next(err);
 
