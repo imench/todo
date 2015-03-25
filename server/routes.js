@@ -22,6 +22,10 @@ module.exports = function (app) {
             case 'ValidationError':
                 // res.sendStatus(400);
                 return res.status(400).json(err);
+            case 'NotFound':
+                // res.sendStatus(400);
+                return res.status(404).json(err);
+
             default:
                 //console.log(err.name);
                 return res.sendStatus(500);
