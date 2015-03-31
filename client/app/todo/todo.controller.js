@@ -3,6 +3,7 @@ angular.module('to_do')
         var myCtrl = this;
         myCtrl.tk = {};
 
+
         Todos.query(function (resp) {
             // Handle successful response here
             myCtrl.todoS = resp;
@@ -11,6 +12,7 @@ angular.module('to_do')
             // Handle error here
             console.log(err);
         });
+
 
         this.addTodo = function (tk) {
             myCtrl.tk = tk;
@@ -43,33 +45,44 @@ angular.module('to_do')
             });
         };
 
+        this.deleteWithoutConf = function (id) {
+        Todos.delete({ id: id }, function (resp) {
+            // Handle successful response here
+            myCtrl.todoS = resp;
+            //console.log(resp);
+        }, function (err) {
+            // Handle error here
+            console.log(err);
+        });
+        };
+
         this.delete = function (id) {
             var r = confirm("Are you sure! You want to delete task!");
             if (r === true) {
-                Todos.delete({ id: id }, function (resp) {
-                    // Handle successful response here
-                    myCtrl.todoS = resp;
-                    //console.log(resp);
-                }, function (err) {
-                    // Handle error here
-                    console.log(err);
-                });
+            this.deleteWithoutConf(id);
             }
             ;
+        };
+
+
+        this.cleanTodoWithoutConf = function () {
+            Todos.clean(function (resp) {
+                // Handle successful response here
+                myCtrl.todoS = resp;
+                //console.log(resp);
+            }, function (err) {
+                // Handle error here
+                console.log(err);
+            });
         };
 
         this.cleanTodo = function () {
             var r = confirm("Are you sure! You want to clear tasks marked as Done!");
             if (r === true) {
-                Todos.clean(function (resp) {
-                    // Handle successful response here
-                    myCtrl.todoS = resp;
-                    //console.log(resp);
-                }, function (err) {
-                    // Handle error here
-                    console.log(err);
-                });
+                this.cleanTodoWithoutConf();
             }
             ;
         };
+
+
     }]);
