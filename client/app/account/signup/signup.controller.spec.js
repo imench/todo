@@ -36,4 +36,34 @@ describe('Unit testing ensureUnique directive', function() {
     });
 });
 
+describe('Unit testing match directive', function() {
+    var $compile,
+        $rootScope;
+
+    // Load the to_do module, which contains the directive
+    beforeEach(module('to_do'));
+
+    // Store references to $rootScope and $compile
+    // so they are available to all tests in this describe block
+    beforeEach(inject(function(_$compile_, _$rootScope_){
+        // The injector unwraps the underscores (_) from around the parameter names when matching
+        $compile = _$compile_;
+        $rootScope = _$rootScope_;
+    }));
+
+    it('should not set match validity to true if password and confirm password do not match', function() {
+        var element = $compile('<form name="signup_form" novalidate><input type="password" name="verification" ng-model="verification" match="password" required/><input type="password" name="password" ng-model="password" match="password" required/></form>')($rootScope);
+        form = $rootScope.signup_form;
+        form.password.$setViewValue('1234');
+        form.verification.$setViewValue('12345');
+        $rootScope.$digest();
+        expect(form.verification.$error.match).toBe(true);
+
+        form.password.$setViewValue('1234');
+        form.verification.$setViewValue('1234');
+        $rootScope.$digest();
+        expect(form.verification.$error.match).toBe(undefined);
+    });
+
+});
 
