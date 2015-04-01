@@ -25,11 +25,12 @@
             link: function (scope, ele, attrs, c) {
                 // console.log('ensureUnique::link');
                 scope.$watch(attrs.ngModel, function (newValue) {
-                    $http({
-                        method: 'POST',
-                        url: '/auth/local/signup/check/username',
-                        data: {username: newValue}
-                    }).success(function (data, status, headers, cfg) {
+//                    $http({
+//                        method: 'POST',
+//                        url: '/auth/local/signup/check/username',
+//                        data: {username: newValue}
+//                    })
+                    $http.post('/auth/local/signup/check/username', {username: newValue}).success(function (data, status, headers, cfg) {
                         c.$setValidity('unique', data.isUnique);
 
                     }).error(function (data, status, headers, cfg) {
