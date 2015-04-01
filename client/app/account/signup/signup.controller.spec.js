@@ -64,6 +64,36 @@ describe('Unit testing match directive', function() {
         $rootScope.$digest();
         expect(form.verification.$error.match).toBe(undefined);
     });
-
 });
+
+describe('Unit testing overwriteEmail directive', function() {
+    var $compile,
+        $rootScope;
+
+    // Load the to_do module, which contains the directive
+    beforeEach(module('to_do'));
+
+    // Store references to $rootScope and $compile
+    // so they are available to all tests in this describe block
+    beforeEach(inject(function(_$compile_, _$rootScope_){
+        // The injector unwraps the underscores (_) from around the parameter names when matching
+        $compile = _$compile_;
+        $rootScope = _$rootScope_;
+    }));
+
+    it('should not set email validity to true if email is not valid', function() {
+        var element = $compile('<form name="signup_form" novalidate><input type="email" overwrite-email name="email" ng-model="email" required/></form>')($rootScope);
+        form = $rootScope.signup_form;
+
+        form.email.$setViewValue('imen@yahoo');
+        $rootScope.$digest();
+        expect(form.email.$error.email).toBe(true);
+
+
+        form.email.$setViewValue('imen@yahoo.fr');
+        $rootScope.$digest();
+        expect(form.email.$error.email).toBe(undefined);
+    });
+});
+
 
